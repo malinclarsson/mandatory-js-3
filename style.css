@@ -27,10 +27,9 @@ section {
   height: auto;
   position: relative;
   left: 200px;
-  top: 85px;
+  top: 70px;
   margin-left: 5%;
   font-size: 20px;
-  border: solid grey 1px;
 }
 /*====================================================================*/
 li:hover{
@@ -44,7 +43,8 @@ main {
   align-items: center;
   margin-right: 10%;
   position: absolute;
-  left: 50%;
+  top: 30%;
+  left: 40%;
 }
 /*====================================================================*/
 h1 {
