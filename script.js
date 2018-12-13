@@ -11,8 +11,8 @@ let img        = document.querySelector("img"); // images
 let button     = document.querySelector("button"); // refresh-button
 
 let parsedData; // parsed data
-let breed; // chosen breed - from list
-let currentBreed // chosen breed.textContent
+let breed; // choosen breed - from list
+let currentBreed; // choosen breed.textContent
 let subBreed; // chosen subbreed - from list
 let subString;
 
@@ -41,12 +41,13 @@ function parse() { // function to parse incoming data, from JSON to JS object
 }
 //=================== render to list =========================================// <-- WORKS (exept for eventlistener??)
 function renderText(data) {
-    let select = document.querySelector("select"); // points to <select>
+    let ul = document.createElement("ul"); // create a new <ul>
+    nav.appendChild(ul); // place <ul> in <nav>
     for (let key in data){ // loops through the object 'data'
-        let option = document.createElement("option"); // creates a new <option>
-        option.textContent = big(key); // put <option>'s content to the current value of 'key'(uppercase) in the loop
-        select.appendChild(option); // in <select>, add an <option>
-        option.addEventListener('change', getBreedImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
+        let li = document.createElement("li"); // creates a new <li> for every key
+        li.textContent = big(key); // put <li>'s content to the current value of 'key'(uppercase) in the loop
+        ul.appendChild(li); // adds <li>'s to <ul>
+        li.addEventListener('click', getBreedImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
     }
     window.location.hash = "/" + ""; // set the #______ to " "
   }
