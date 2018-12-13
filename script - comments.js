@@ -29,7 +29,7 @@ function small(string) { // First letter should be lower case
 function getData() {
     let currentBreed = window.location.hash.substring(1); // choosen breed.textContent
     let req = new XMLHttpRequest (); //
-    req.open("GET", "https://dog.ceo/api/breeds/list/all"); // request "get me data", "from this URL"
+    req.open("GET", "https://dog.ceo/api/breeds/list/all"); // request "get me data", "from this URL
     req.addEventListener("load", parse); // when done, start the function 'parse()'
     req.send(); // send the request
 }
@@ -37,8 +37,12 @@ getData(); // call function 'getData()'
 
 //=================== parse checked data =====================================// <-- WORKS
 function parse() { // function to parse incoming data, from JSON to JS object
-  let parsedData = JSON.parse(this.responseText); // save parsed data to 'parsedData'
-  renderText(parsedData.message); // calls the function 'renderText()', with the argument 'parsedData'
+  if(this.status >= 200 && this.status < 300){
+    let parsedData = JSON.parse(this.responseText); // save parsed data to 'parsedData'
+    renderText(parsedData.message); // calls the function 'renderText()', with the argument 'parsedData'
+  }  else {
+    console.error("Invalid status" + this.status);
+  }
 }
 //=================== render to list =========================================// <-- WORKS (exept for eventlistener??)
 function renderText(data) {

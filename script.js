@@ -8,7 +8,7 @@ let main       = document.querySelector("main");
 let h1         = document.querySelector("h1");
 h1.textContent = "";
 let img        = document.querySelector("img");
-let button     = document.querySelector("button"); 
+let button     = document.querySelector("button");
 
 let parsedData;
 let breed;
@@ -37,8 +37,12 @@ getData();
 
 //=================== parse checked data =====================================//
 function parse() {
-  let parsedData = JSON.parse(this.responseText);
-  renderText(parsedData.message);
+  if(this.status >= 200 && this.status < 300){
+    let parsedData = JSON.parse(this.responseText);
+    renderText(parsedData.message);
+  }  else {
+    console.error("Invalid status" + this.status);
+  }
 }
 //=================== render to list =========================================//
 function renderText(data) {
@@ -159,7 +163,7 @@ function setCurrentBreed() {
 
   h1.textContent = "";
   if (hash.length === 2) {
-    h1.textContent = big(hash[0]) + " (" + big(hash[1]) + ")";
+    h1.textContent = big(hash[1]) + " " + big(hash[0]);
   } else {
     h1.textContent = big(hash[0]);
   }
