@@ -5,10 +5,10 @@
 let nav        = document.querySelector("nav");
 let section    = document.querySelector("section");
 let main       = document.querySelector("main");
-let h1         = document.querySelector("h1"); // breed-title
-h1.textContent = ""; // title is empty by default
-let img        = document.querySelector("img"); // images
-let button     = document.querySelector("button"); // refresh-button
+let h1         = document.querySelector("h1");
+h1.textContent = "";
+let img        = document.querySelector("img");
+let button     = document.querySelector("button"); 
 
 let parsedData;
 let breed;
