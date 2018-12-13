@@ -23,7 +23,7 @@ nav {
 }
 /*====================================================================*/
 section {
-  border: solid grey 1px   /*bara för att visa vart den kommer befinna sig*/
+  border: solid grey 1px;   /*bara för att visa vart den kommer befinna sig*/
   width: 150px;
   height: auto;
   position: relative;
