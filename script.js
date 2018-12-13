@@ -6,19 +6,20 @@ let nav        = document.querySelector("nav"); // where the list of breeds will
 let section    = document.querySelector("section"); // where the list of sub-breeds will be
 let main       = document.querySelector("main"); // breed-title, images + button
 let h1         = document.querySelector("h1"); // breed-title
-h1.textContent = "Random pictures"; // title is "Random picture" by default
+h1.textContent = ""; // title is empty by default
 let img        = document.querySelector("img"); // images
 let button     = document.querySelector("button"); // refresh-button
 
 let parsedData; // parsed data
 let breed; // chosen breed - from list
+let currentBreed // chosen breed.textContent
 let subBreed; // chosen subbreed - from list
 let subString;
 
 //_____________________________________________________________________________________________
 //                                    DATA.
 //_____________________________________________________________________________________________
-//=================== toUpperCase =================================//
+//=================== toUpperCase ============================================// <-- WORKS
 function big(string) { // First letter should be UPPER CASE
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -32,23 +33,22 @@ function getData() {
     console.log(this.responseText); // shows the requested data                  <-- funkar inte? */
 }
 getData(); // call function 'getData()'
-//=================== check if data is valid =================================//
 
 //=================== parse checked data =====================================// <-- WORKS
 function parse() { // function to parse incoming data, from JSON to JS object
   let parsedData = JSON.parse(this.responseText); // save parsed data to 'parsedData'
   renderText(parsedData.message); // calls the function 'renderText()', with the argument 'parsedData'
 }
-//=================== render to list =========================================// <-- WORKS
+//=================== render to list =========================================// <-- WORKS (exept for eventlistener??)
 function renderText(data) {
     let select = document.querySelector("select"); // points to <select>
     for (let key in data){ // loops through the object 'data'
         let option = document.createElement("option"); // creates a new <option>
         option.textContent = big(key); // put <option>'s content to the current value of 'key'(uppercase) in the loop
         select.appendChild(option); // in <select>, add an <option>
-        window.location.hash = "/" + "Random"; // set the #______ to "/Random"
+        option.addEventListener('change', getBreedImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
     }
-      option.addEventListener('click', getRandomImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'
+    window.location.hash = "/" + "Random"; // set the #______ to "/Random"
   }
 //_____________________________________________________________________________________________
 //=================== request subbreed data =========================================//
@@ -71,13 +71,15 @@ function renderSubText(data) {
     let li = document.createElement("li"); // create a new <li>
     li.textContent = big(key); // put <li>'s content to the current value of 'key'(uppercase) in the loop
     ul.appendChild(li); // place the <li> in <ul>
-    window.location.hash = "/" + breed; // set the #______ to "/name of clicked breed"
+    li.addEventListener('click', getSubBreedImg, getSubBreedHash); // when a <li> is clicked, call the function 'getSubBreedImg()'
   }
-  li.addEventListener('click', getSubBreedImg, getSubBreedHash); // when a <li> is clicked, call the function 'getSubBreedImg()'
+  h1.textContent= breed;
+  window.location.hash = "/" + breed; // set the #______ to "/name of clicked breed"
 }
 //=================== set loadSubBreedPage-hash =========================================//
 /*
 function getSubBreedHash () {
+  h1.textContent= breed;
   window.location.hash = "/" + breed + "/" subBreed; // set the #______ to "/name of clicked breed + subbreed"
 }
 */
@@ -86,7 +88,7 @@ function getSubBreedHash () {
 //_____________________________________________________________________________________________
 //=================== request random images =======================================// <-- WORKS
 function getRandomImg() {
-    let req = new XMLHttpRequest (); //
+    let req = new XMLHttpRequest () ; //
     req.open("GET", "https://dog.ceo/api/breeds/image/random"); // request images from this URL
     req.addEventListener("load", parseImg); // when done, start the function 'parseImg()'
     req.send(); // send the request
@@ -114,9 +116,9 @@ button.addEventListener("click", getRandomImg); // when the button is clicked, s
 
 //=================== request breed pictures =======================================// <--
 function getBreedImg(e) {
-  let breed = e.target.value; // saving the value of selected breed
+  currentBreed = breed.textContent; // saving the value of selected breed
   let req = new XMLHttpRequest (); // request images from this URL
-  req.open("GET", "https://dog.ceo/api/breed/"+breed+"/images/random"); // request images from this URL
+  req.open("GET", "https://dog.ceo/api/breed/"+currentBreed+"/images/random"); // request images from this URL
   req.addEventListener("load", parseBreedImg); // when done, start the function 'parseBreedImg()')
   req.send(); // send the request
 }
@@ -138,6 +140,7 @@ function renderBreedImg (imgData) {
 getBreedImg(); // call functionen 'getBreedImg()'
 
 //=================== click for breed images =======================================//
+button.removeEventListener("click", getRandomImg);
 button.addEventListener("click", getBreedImg); // when the button is clicked, start the function 'getRandomImg()'
 //___________________________________________________________________________________________________________________________________
 
@@ -145,7 +148,7 @@ button.addEventListener("click", getBreedImg); // when the button is clicked, st
 function getSubBreedImg(e) {
   let subBreed = e.target.value; // sparar värdet av vad som trycks på
   let req = new XMLHttpRequest (); // sparar i en variabel
-  req.open("GET", "https://dog.ceo/api/breed/"+breed+ "/" +subBreed+"/images/random"); // request "get me images", "from this URL"
+  req.open("GET", "https://dog.ceo/api/breed/"+currentBreed+ "/" +subBreed+"/images/random"); // request "get me images", "from this URL"
   req.addEventListener("load", parseSubBreedImg); // when done, start the function 'parseSubBreedImg()'
   req.send(); // send the request
 }
@@ -167,5 +170,6 @@ function renderSubBreedImg (imgData) {
 getSubBreedImg(); // call function 'getSubBreedImg()'
 
 //=================== click for subbreed images =======================================//
+button.removeEventListener("click", getBreedImg);
 button.addEventListener("click", getSubBreedImg); // when the button is clicked, start the function 'getRandomImg()'
 //___________________________________________________________________________________________________________________________________
