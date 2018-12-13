@@ -9,10 +9,10 @@ let h1         = document.querySelector("h1"); // breed-title
 h1.textContent = ""; // title is empty by default
 let img        = document.querySelector("img"); // images
 let button     = document.querySelector("button"); // refresh-button
+let currentBreed = window.location.hash.substring(1); // choosen breed.textContent
 
 let parsedData; // parsed data
 let breed; // choosen breed - from list
-let currentBreed; // choosen breed.textContent
 let subBreed; // chosen subbreed - from list
 let subString;
 
@@ -46,16 +46,20 @@ function renderText(data) {
     for (let key in data){ // loops through the object 'data'
         let li = document.createElement("li"); // creates a new <li> for every key
         li.textContent = big(key); // put <li>'s content to the current value of 'key'(uppercase) in the loop
-        ul.appendChild(li); // adds <li>'s to <ul>
-        li.addEventListener('click', getBreedImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
+        li.addEventListener('click', function (e) { // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
+        window.location.hash = e.target.textContent;
+        /*h1 = e.target.textContent;*/
+        getBreedImg();
+        getSubBreed();
+      });
+      ul.appendChild(li); // adds <li>'s to <ul>
     }
-    window.location.hash = "/" + ""; // set the #______ to " "
   }
 //_____________________________________________________________________________________________
 //=================== request subbreed data =========================================//
 function getSubBreed() {
   let req = new XMLHttpRequest (); //
-  req.open('GET', 'https://dog.ceo/api/breed/' + breed + '/list'); // request "get me data", "from this URL"
+  req.open('GET', 'https://dog.ceo/api/breed/' + currentBreed + '/list'); // request "get me data", "from this URL"
   req.addEventListener("load", parseSubBreed); // when done, start the function 'parseSubBreed()'
   req.send(); // send the request
 }
@@ -71,11 +75,12 @@ function renderSubText(data) {
   for (let key in data){ // loop through the object 'data'
     let li = document.createElement("li"); // create a new <li>
     li.textContent = big(key); // put <li>'s content to the current value of 'key'(uppercase) in the loop
+    window.location.hash = e.target.textContent;
     ul.appendChild(li); // place the <li> in <ul>
     li.addEventListener('click', getSubBreedImg, getSubBreedHash); // when a <li> is clicked, call the function 'getSubBreedImg()'
   }
   h1.textContent= breed;
-  window.location.hash = "/" + breed; // set the #______ to "/name of clicked breed"
+  window.location.hash = "/" + currentBreed; // set the #______ to "/name of clicked breed"
 }
 //=================== set loadSubBreedPage-hash =========================================//
 /*
@@ -94,12 +99,12 @@ function getRandomImg() {
     req.addEventListener("load", parseImg); // when done, start the function 'parseImg()'
     req.send(); // send the request
 }
-//=================== parse random images =======================================//
+//=================== parse random images =======================================// <-- WORKS
 function parseImg() { // function to parse incoming , from JSON to JS object
    let parsedData = JSON.parse(this.responseText);  // save parsed data to 'parsedData'
    renderImg(parsedData.message); // calls the function 'renderImg()', with the argument and its value
 }
-//=================== render random images =======================================//
+//=================== render random images =======================================// <-- WORKS
 function renderImg (imgData) {
   let checkImg = document.querySelector("img"); // images of random dogs
   if (checkImg){ // IF there already is an image
@@ -117,7 +122,7 @@ button.addEventListener("click", getRandomImg); // when the button is clicked, s
 
 //=================== request breed pictures =======================================// <--
 function getBreedImg(e) {
-  currentBreed = breed.textContent; // saving the value of selected breed
+  currentBreed = e.target.value; // saving the value of selected breed
   let req = new XMLHttpRequest (); // request images from this URL
   req.open("GET", "https://dog.ceo/api/breed/"+currentBreed+"/images/random"); // request images from this URL
   req.addEventListener("load", parseBreedImg); // when done, start the function 'parseBreedImg()')
