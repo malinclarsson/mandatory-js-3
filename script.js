@@ -48,7 +48,7 @@ function renderText(data) {
         select.appendChild(option); // in <select>, add an <option>
         option.addEventListener('change', getBreedImg, getSubBreed); // when an <option> is clicked, call the function 'getRandomImg()'   <-- NOPE
     }
-    window.location.hash = "/" + "Random"; // set the #______ to "/Random"
+    window.location.hash = "/" + ""; // set the #______ to " "
   }
 //_____________________________________________________________________________________________
 //=================== request subbreed data =========================================//
