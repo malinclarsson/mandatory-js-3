@@ -19,31 +19,29 @@ nav {
   height: 50%;
   flex: 1;
   overflow-x: hidden;
+  margin-left: 3%;
 }
 /*====================================================================*/
 section {
-  border: solid grey 1px;
+  border: solid grey 1px   /*bara för att visa vart den kommer befinna sig*/
   width: 150px;
   height: auto;
   position: relative;
   left: 250px;
   top: 85px;
+  margin-left: 5%;
 }
 /*====================================================================*/
 li:hover{
   cursor: pointer;
-  font-weight: bolder;
-}
-/*====================================================================*/
-#breeds {
-  font-size: 10px;
+  font-weight: bold;
 }
 /*====================================================================*/
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left: 30%;
+  margin-right: 10%;
 }
 /*====================================================================*/
 h1 {
